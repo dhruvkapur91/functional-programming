@@ -7,4 +7,8 @@ class CoffeeShopSpec extends FunSuite with Matchers {
     MockedCreditCard.chargedAmount should be(11)
   }
 
+  test("should be able to buy 2 cups of coffee") {
+    CoffeeShop.buyMany(MockedCreditCard,2) should be(Seq(Coffee(),Coffee()))
+  }
+
 }
