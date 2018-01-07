@@ -1,4 +1,5 @@
 import SideEffect.CreditCard
+import java.time._
 
 object SideEffect {
 
@@ -21,6 +22,8 @@ case class Coffee() {
   val price = 10
 }
 
+case class Purchase(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTime)
+
 
 object CoffeeShop {
   def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
@@ -30,12 +33,19 @@ object CoffeeShop {
     coffees
   }
 
+  def buyMany(purchases: Purchase*): Seq[Coffee] = {
+    require(allPurchasesMadeThroughSameCreditCard(purchases))
+    val numberOfCoffeesRequired = purchases.map(_.numberOfCups).sum
+    if (numberOfCoffeesRequired == 0) Seq.empty else buyMany(purchases.head.creditCard, numberOfCoffeesRequired)
+  }
 
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
     creditCard.charge(coffee.price)
     coffee
   }
+
+  private def allPurchasesMadeThroughSameCreditCard(purchases: Seq[Purchase]): Boolean = purchases.map(_.creditCard).toSet.size == 1
 
 }
 

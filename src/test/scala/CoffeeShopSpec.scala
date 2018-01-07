@@ -1,8 +1,13 @@
+import java.time.{LocalDate, LocalDateTime, LocalTime}
+
 import CustomMatchers._
 import org.scalatest.{FunSuite, Matchers}
 
 
 class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
+
+  val onePm = LocalDateTime.of(2018,1,18,13,0)
+  val fourPm = LocalDateTime.of(2018,1,18,16,0)
 
   test("should charge total of $11 ($10 + $1 fee) when buying a cup of coffee") {
     CoffeeShop.buy(MockedCreditCard) should be(Coffee())
@@ -18,4 +23,16 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
     MockedCreditCard should (be(calledOnce) and be(chargedWith(21)))
   }
 
+  test(
+    """
+      |should charge total of $21 ($10*2 + $1 fee)
+      |when buying 1 coffee at 1 PM and 1 coffee at 4 PM using same credit card
+    """.stripMargin) {
+
+    CoffeeShop.buyMany(
+      Purchase(MockedCreditCard, 1, onePm),
+      Purchase(MockedCreditCard, 1, fourPm)) should be(Seq(Coffee(), Coffee()))
+
+    MockedCreditCard should (be(calledOnce) and be(chargedWith(21)))
+  }
 }
