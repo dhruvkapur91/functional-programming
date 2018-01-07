@@ -34,9 +34,12 @@ object CoffeeShop {
   }
 
   def buyMany(purchases: Purchase*): Seq[Coffee] = {
-    require(allPurchasesMadeThroughSameCreditCard(purchases))
-    val numberOfCoffeesRequired = purchases.map(_.numberOfCups).sum
-    if (numberOfCoffeesRequired == 0) Seq.empty else buyMany(purchases.head.creditCard, numberOfCoffeesRequired)
+    def _buyManyForOneCreditCard(purchases: Seq[Purchase]) : Seq[Coffee] = {
+      val numberOfCoffeesRequired = purchases.map(_.numberOfCups).sum
+      if (numberOfCoffeesRequired == 0) Seq.empty else buyMany(purchases.head.creditCard, numberOfCoffeesRequired)
+    }
+
+    purchases.groupBy(_.creditCard).values.flatMap(_buyManyForOneCreditCard).toSeq
   }
 
   def buy(creditCard: CreditCard): Coffee = {
@@ -45,7 +48,6 @@ object CoffeeShop {
     coffee
   }
 
-  private def allPurchasesMadeThroughSameCreditCard(purchases: Seq[Purchase]): Boolean = purchases.map(_.creditCard).toSet.size == 1
 
 }
 
