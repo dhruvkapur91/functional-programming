@@ -40,8 +40,8 @@ object CoffeeShop {
 }
 
 object CoffeeShopCounter {
-  def buy(creditCard: CreditCard) = {
-    val order: Order = CoffeeShop.buy(creditCard)
+  def buy(creditCard: CreditCard, numberOfCups: Int = 1) = {
+    val order: Order = CoffeeShop.buyMany(creditCard, numberOfCups)
     creditCard.charge(order.charge.price)
     println(order)
   }
