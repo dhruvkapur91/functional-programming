@@ -12,7 +12,6 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
   test("should charge total of $11 ($10 + $1 fee) when buying a cup of coffee") {
     CoffeeShop.buy(MockedCreditCard) should be(Coffee())
     MockedCreditCard.chargedAmount should be(11)
-    // charge should be(10)
   }
 
   test("should be able to buy 2 cups of coffee") {
@@ -21,8 +20,7 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
 
   test("should be able to buy 2 cups of coffee with a total charge of $21 ($10*2 + $1 fee)") {
     CoffeeShop.buyMany(MockedCreditCard, 2) should be(Seq(Coffee(), Coffee()))
-    MockedCreditCard should (be(calledOnce) and be(chargedWith(21))) // Business doesn't care about calledOnce - tech detail
-    // charge should be(20)
+    MockedCreditCard should (be(calledOnce) and be(chargedWith(21)))
   }
 
   test(
