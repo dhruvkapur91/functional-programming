@@ -1,9 +1,11 @@
 import SideEffect.CreditCard
 
 object SideEffect {
-  class CreditCard(number : String) {
-    def charge(price : Int) : String = ???
+
+  class CreditCard(number: String) {
+    def charge(price: Int): String = ???
   }
+
 }
 
 case class Coffee() {
@@ -21,4 +23,12 @@ object CoffeeShop {
     Order(coffee, Charge(coffee.price))
   }
 
+}
+
+object CoffeeShopCounter {
+  def buy(creditCard: CreditCard) = {
+    val order: Order = CoffeeShop.buy(creditCard)
+    creditCard.charge(order.charge.price)
+    println(order)
+  }
 }
