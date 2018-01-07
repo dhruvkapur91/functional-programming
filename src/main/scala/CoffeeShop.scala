@@ -28,8 +28,8 @@ case class Purchase(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTi
 object CoffeeShop {
   def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
     val coffees = (1 to numberOfCups).map(_ => Coffee())
-    val price = coffees.map(_.price).sum
-    creditCard.charge(price)
+    val `coffee.price` = coffees.map(_.price).sum
+    creditCard.charge(`coffee.price`)
     coffees
   }
 
@@ -44,7 +44,8 @@ object CoffeeShop {
 
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
-    creditCard.charge(coffee.price)
+    val `coffee.price` = coffee.price
+    creditCard.charge(`coffee.price`)
     coffee
   }
 }
