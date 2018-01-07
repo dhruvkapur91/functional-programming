@@ -1,5 +1,7 @@
 import SideEffect.CreditCard
 
+import scala.collection.immutable.IndexedSeq
+
 object SideEffect {
 
   class CreditCard(number: String) {
@@ -14,20 +16,33 @@ case class Coffee() {
 
 case class Charge(price: Int)
 
-case class Order(coffee: Coffee, charge: Charge)
+object Charge {
+  def totalCharge(charges : Seq[Charge]) = Charge(charges.map(_.price).sum)
+}
+
+case class Item(coffee: Coffee, charge: Charge)
+
+case class Order(items: Seq[Item], charge: Charge)
 
 object CoffeeShop {
+  import Charge._
 
-  def buy(creditCard: CreditCard): Order = {
+  def buyMany(creditCard: CreditCard, numberOfCups: Int): Order = {
+    val items = (1 to numberOfCups).map(_ => buy(creditCard))
+    Order(items, totalCharge(items.map(_.charge)))
+  }
+
+
+  def buy(creditCard: CreditCard): Item = {
     val coffee = Coffee()
-    Order(coffee, Charge(coffee.price))
+    Item(coffee, Charge(coffee.price))
   }
 
 }
 
 object CoffeeShopCounter {
   def buy(creditCard: CreditCard) = {
-    val order: Order = CoffeeShop.buy(creditCard)
+    val order: Item = CoffeeShop.buy(creditCard)
     creditCard.charge(order.charge.price)
     println(order)
   }
