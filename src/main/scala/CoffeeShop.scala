@@ -18,9 +18,7 @@ case class Charge(price: Int) {
   def +(other: Charge): Charge = Charge(price + other.price)
 }
 
-case class Item(coffee: Coffee, charge: Charge)
-
-case class Order(items: Seq[Item], charge: Charge) {
+case class Order(items: Seq[Coffee], charge: Charge) {
   def +(other: Order) = Order(items ++ other.items, charge + other.charge)
 }
 
@@ -34,7 +32,7 @@ object CoffeeShop {
 
   def buy(creditCard: CreditCard): Order = {
     val coffee = Coffee()
-    Order(Seq(Item(coffee, Charge(coffee.price))), Charge(coffee.price))
+    Order(Seq(coffee), Charge(coffee.price))
   }
 
 }
