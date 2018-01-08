@@ -1,6 +1,6 @@
-import SideEffect.CreditCard
+import java.time.LocalDateTime
 
-import scala.collection.immutable.IndexedSeq
+import SideEffect.CreditCard
 
 object SideEffect {
 
@@ -22,17 +22,28 @@ case class Order(items: Seq[Coffee], charge: Charge) {
   def +(other: Order) = Order(items ++ other.items, charge + other.charge)
 }
 
+case class Request(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTime)
+
 object CoffeeShop {
+  def buyMany(requests: Seq[Request]): Order = {
+    require(creditCardShouldBeSameForAll(requests))
+
+    val orders = requests.map(request => buyMany(request.creditCard, request.numberOfCups))
+    orders.reduce(_ + _)
+  }
 
   def buyMany(creditCard: CreditCard, numberOfCups: Int): Order = {
     val orders = (1 to numberOfCups).map(_ => buy(creditCard))
     orders.reduce(_ + _)
   }
 
-
   def buy(creditCard: CreditCard): Order = {
     val coffee = Coffee()
     Order(Seq(coffee), Charge(coffee.price))
+  }
+
+  private def creditCardShouldBeSameForAll(requests: Seq[Request]): Boolean = {
+    requests.map(_.creditCard).toSet.size == 1
   }
 
 }
