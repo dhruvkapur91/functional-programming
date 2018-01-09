@@ -27,11 +27,11 @@ case class Order(items: Seq[Coffee], charge: Charge) {
 case class Request(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTime)
 
 object CoffeeShop {
-  def buyMany(requests: Seq[Request]): Order = {
-    require(creditCardShouldBeSameForAll(requests))
+  def buyMany(requests: Seq[Request]): Seq[Order] = {
+    def buyManyForOneCreditCard(requests: Seq[Request]): Order =
+      requests.map(request => buyMany(request)).reduce(_ + _)
 
-    val orders = requests.map(request => buyMany(request))
-    orders.reduce(_ + _)
+    requests.groupBy(_.creditCard).values.map(buyManyForOneCreditCard).toSeq
   }
 
   def buyMany(request: Request): Order = {
@@ -43,16 +43,11 @@ object CoffeeShop {
     val coffee = Coffee()
     Order(Seq(coffee), Charge(coffee.price, creditCard))
   }
-
-  private def creditCardShouldBeSameForAll(requests: Seq[Request]): Boolean = {
-    requests.map(_.creditCard).toSet.size == 1
-  }
-
 }
 
 object CoffeeShopCounter {
   def buy(creditCard: CreditCard, requests: Request*) = {
-    val order = CoffeeShop.buyMany(requests)
+    val order = CoffeeShop.buyMany(requests).head
     creditCard.charge(order.charge.price)
     println(order)
   }
