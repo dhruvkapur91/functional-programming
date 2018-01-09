@@ -30,12 +30,12 @@ object CoffeeShop {
   def buyMany(requests: Seq[Request]): Order = {
     require(creditCardShouldBeSameForAll(requests))
 
-    val orders = requests.map(request => buyMany(request.creditCard, request.numberOfCups))
+    val orders = requests.map(request => buyMany(request))
     orders.reduce(_ + _)
   }
 
-  def buyMany(creditCard: CreditCard, numberOfCups: Int): Order = {
-    val orders = (1 to numberOfCups).map(_ => buy(creditCard))
+  def buyMany(request: Request): Order = {
+    val orders = (1 to request.numberOfCups).map(_ => buy(request.creditCard))
     orders.reduce(_ + _)
   }
 

@@ -13,7 +13,8 @@ class CoffeeShopSpec extends FunSuite with Matchers {
   }
 
   test("buying two cups of coffee should return one order having two cup of coffee with charge of $20") {
-    CoffeeShop.buyMany(MockedCreditCard, 2) should be(Order(Seq(Coffee(), Coffee()), Charge(20, MockedCreditCard)))
+    val request = Request(MockedCreditCard, 2, LocalDateTime.now())
+    CoffeeShop.buyMany(request) should be(Order(Seq(Coffee(), Coffee()), Charge(20, MockedCreditCard)))
   }
 
   test(
