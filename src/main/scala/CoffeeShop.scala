@@ -14,8 +14,10 @@ case class Coffee() {
   val price = 10
 }
 
-case class Charge(price: Int) {
-  def +(other: Charge): Charge = Charge(price + other.price)
+case class Charge(price: Int, creditCard: CreditCard) {
+  def +(other: Charge): Charge =
+    if (creditCard == other.creditCard) Charge(price + other.price, creditCard)
+    else throw new Exception("Cards are different")
 }
 
 case class Order(items: Seq[Coffee], charge: Charge) {
@@ -39,7 +41,7 @@ object CoffeeShop {
 
   def buy(creditCard: CreditCard): Order = {
     val coffee = Coffee()
-    Order(Seq(coffee), Charge(coffee.price))
+    Order(Seq(coffee), Charge(coffee.price, creditCard))
   }
 
   private def creditCardShouldBeSameForAll(requests: Seq[Request]): Boolean = {
