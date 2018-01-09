@@ -7,13 +7,13 @@ class CoffeeShopCounterSpec extends FunSuite with Matchers {
   val fourPm = LocalDateTime.of(2018,1,18,16,0)
 
   test(
-    """should charge $21(20 + 1 fee)
-      |when requesting one coffee at 1 PM and
-      |one coffee at 4 pm using same credit card
+    """should charge $11(10 + 1 fee) to each card
+      |when requesting two coffees using separate credit cards
     """.stripMargin) {
     val firstRequest = Request(MockedCreditCard, 1, onePm)
-    val secondRequest = Request(MockedCreditCard, 1, fourPm)
+    val secondRequest = Request(AnotherMockedCreditCard, 1, onePm)
     CoffeeShopCounter.buy(MockedCreditCard, firstRequest, secondRequest)
-    MockedCreditCard.chargedAmount should be(21)
+    MockedCreditCard.chargedAmount should be(11)
+    AnotherMockedCreditCard.chargedAmount should be(11)
   }
 }

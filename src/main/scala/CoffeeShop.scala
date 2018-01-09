@@ -47,8 +47,12 @@ object CoffeeShop {
 
 object CoffeeShopCounter {
   def buy(creditCard: CreditCard, requests: Request*) = {
-    val order = CoffeeShop.buyMany(requests).head
-    creditCard.charge(order.charge.price)
-    println(order)
+    def chargeFromCreditCard(order: Order) =
+      order.charge.creditCard.charge(order.charge.price)
+
+    val orders = CoffeeShop.buyMany(requests)
+
+    orders.foreach(chargeFromCreditCard)
+    println(orders)
   }
 }
