@@ -22,7 +22,10 @@ case class Coffee() {
 
 object CoffeeShop {
   def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
-    (1 to numberOfCups).map(_ => buy(creditCard))
+    val coffees = (1 to numberOfCups).map(_ => Coffee())
+    val price = coffees.map(_.price).sum
+    creditCard.charge(price)
+    coffees
   }
 
 
