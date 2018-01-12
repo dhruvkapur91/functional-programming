@@ -2,7 +2,16 @@ import SideEffect.CreditCard
 
 object SideEffect {
   class CreditCard(number : String) {
-    def charge(price : Int): Unit = ???
+    def charge(price : Int): Unit = {
+      println(
+        s"""
+           |1. Contacted Credit Card company via web service
+           |2. Authorizing transaction
+           |3. Charging credit card $price
+           |4. Charging credit card fee $$1
+           |5. Recording transaction in DB
+        """.stripMargin)
+    }
   }
 }
 
@@ -22,4 +31,10 @@ object CoffeeShop {
     creditCard.charge(coffee.price)
     coffee
   }
+}
+
+object BetrayedProductionUser extends App {
+  val someonesCreditCard = new CreditCard("111")
+  val twoCoffees = CoffeeShop.buyMany(someonesCreditCard, 2)
+  println(twoCoffees)
 }
