@@ -26,9 +26,11 @@ case class Purchase(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTi
 object CoffeeShop {
 
   def buyMany(purchases: Purchase*): Seq[Coffee] = {
-    require(allPurchasesMadeUsingSameCreditCard(purchases))
-    val numberOfCupsRequired = purchases.map(_.numberOfCups).sum
-    buyMany(Purchase(purchases.head.creditCard, numberOfCupsRequired, LocalDateTime.now()))
+    def _buyManyForOneCreditCard(purchases: Seq[Purchase]) : Seq[Coffee] = {
+      val numberOfCoffeesRequired = purchases.map(_.numberOfCups).sum
+      buyMany(Purchase(purchases.head.creditCard, numberOfCoffeesRequired, LocalDateTime.now()))
+    }
+    purchases.groupBy(_.creditCard).values.flatMap(_buyManyForOneCreditCard).toSeq
   }
 
   def buyMany(purchase: Purchase): Seq[Coffee] = {
@@ -44,10 +46,6 @@ object CoffeeShop {
     val coffee = Coffee()
     creditCard.charge(coffee.price)
     coffee
-  }
-
-  private def allPurchasesMadeUsingSameCreditCard(purchases: Seq[Purchase]): Boolean = {
-    purchases.map(_.creditCard).toSet.size == 1
   }
 }
 

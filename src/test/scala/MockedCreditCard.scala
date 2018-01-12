@@ -14,3 +14,4 @@ abstract class MockCard(number: String) extends CreditCard(number) {
 }
 
 case object MockedCreditCard extends MockCard("Mocked")
+case object AnotherMockedCreditCard extends MockCard("AnotherMocked")

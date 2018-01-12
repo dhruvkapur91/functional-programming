@@ -35,4 +35,16 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
     CoffeeShop.buyMany(firstPurchase, secondPurchase) should be(Seq(Coffee(), Coffee()))
     MockedCreditCard should (be(calledOnce) and be(calledWith(20)))
   }
+
+  test(
+    """
+      | purchasing one coffee using one credit card and purchasing one coffee using separate credit card
+      | should call each credit card only once with total of $20
+    """.stripMargin) {
+    val firstPurchase = Purchase(MockedCreditCard, 1, onePm)
+    val secondPurchase = Purchase(AnotherMockedCreditCard, 1, fourPm)
+    CoffeeShop.buyMany(firstPurchase, secondPurchase) should be(Seq(Coffee(), Coffee()))
+    MockedCreditCard should (be(calledOnce) and be(calledWith(10)))
+    AnotherMockedCreditCard should (be(calledOnce) and be(calledWith(10)))
+  }
 }
