@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 import SideEffect.CreditCard
 
 object SideEffect {
@@ -19,12 +21,13 @@ case class Coffee() {
   val price = 10
 }
 
+case class Purchase(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTime)
 
 object CoffeeShop {
-  def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
-    val coffees = (1 to numberOfCups).map(_ => Coffee())
+  def buyMany(purchase: Purchase): Seq[Coffee] = {
+    val coffees = (1 to purchase.numberOfCups).map(_ => Coffee())
     val price = coffees.map(_.price).sum
-    creditCard.charge(price)
+    purchase.creditCard.charge(price)
     coffees
   }
 
@@ -38,6 +41,6 @@ object CoffeeShop {
 
 object BetrayedProductionUser extends App {
   val someonesCreditCard = new CreditCard("111")
-  val twoCoffees = CoffeeShop.buyMany(someonesCreditCard, 2)
+  val twoCoffees = CoffeeShop.buyMany(Purchase(someonesCreditCard, 2, LocalDateTime.now()))
   println(twoCoffees)
 }
