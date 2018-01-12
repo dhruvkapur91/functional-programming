@@ -24,6 +24,13 @@ case class Coffee() {
 case class Purchase(creditCard: CreditCard, numberOfCups: Int, time: LocalDateTime)
 
 object CoffeeShop {
+
+  def buyMany(purchases: Purchase*): Seq[Coffee] = {
+    require(allPurchasesMadeUsingSameCreditCard(purchases))
+    val numberOfCupsRequired = purchases.map(_.numberOfCups).sum
+    buyMany(Purchase(purchases.head.creditCard, numberOfCupsRequired, LocalDateTime.now()))
+  }
+
   def buyMany(purchase: Purchase): Seq[Coffee] = {
     if(purchase.numberOfCups == 0) Seq.empty else {
       val coffees = (1 to purchase.numberOfCups).map(_ => Coffee())
@@ -33,11 +40,14 @@ object CoffeeShop {
     }
   }
 
-
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
     creditCard.charge(coffee.price)
     coffee
+  }
+
+  private def allPurchasesMadeUsingSameCreditCard(purchases: Seq[Purchase]): Boolean = {
+    purchases.map(_.creditCard).toSet.size == 1
   }
 }
 
