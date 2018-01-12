@@ -12,6 +12,10 @@ case class Coffee() {
 
 
 object CoffeeShop {
+  def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
+    (1 to numberOfCups).map(_ => buy(creditCard))
+  }
+
 
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
