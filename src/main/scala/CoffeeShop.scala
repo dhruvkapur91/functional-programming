@@ -36,15 +36,17 @@ object CoffeeShop {
   def buyMany(purchase: Purchase): Seq[Coffee] = {
     if(purchase.numberOfCups == 0) Seq.empty else {
       val coffees = (1 to purchase.numberOfCups).map(_ => Coffee())
-      val price = coffees.map(_.price).sum
-      purchase.creditCard.charge(price)
+      val creditCard = purchase.creditCard
+      val `coffee.price` = coffees.map(_.price).sum
+      creditCard.charge(`coffee.price`)
       coffees
     }
   }
 
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
-    creditCard.charge(coffee.price)
+    val `coffee.price` = coffee.price
+    creditCard.charge(`coffee.price`)
     coffee
   }
 }
