@@ -10,13 +10,13 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
 
   test("should call credit card with total of $10 when buying a cup of coffee") {
     CoffeeShop.buy(MockedCreditCard) should be(Coffee())
-    MockedCreditCard should be(calledWith(10))
+    MockedCreditCard should be(calledWith(10, "USD"))
   }
 
   test("should call credit card with total of $20 when buying 2 cups of coffee") {
     val now = LocalDateTime.now()
     CoffeeShop.buyMany(Purchase(MockedCreditCard, 2, now)) should be(Seq(Coffee(), Coffee()))
-    MockedCreditCard should (be(calledOnce) and be(calledWith(20)))
+    MockedCreditCard should (be(calledOnce) and be(calledWith(20, "USD")))
   }
 
   test("should not call credit card and not return coffee when number of cups ordered is 0") {
@@ -33,7 +33,7 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
     val firstPurchase = Purchase(MockedCreditCard, 1, onePm)
     val secondPurchase = Purchase(MockedCreditCard, 1, fourPm)
     CoffeeShop.buyMany(firstPurchase, secondPurchase) should be(Seq(Coffee(), Coffee()))
-    MockedCreditCard should (be(calledOnce) and be(calledWith(20)))
+    MockedCreditCard should (be(calledOnce) and be(calledWith(20, "USD")))
   }
 
   test(
@@ -44,7 +44,7 @@ class CoffeeShopSpec extends FunSuite with Matchers with ResetMocks {
     val firstPurchase = Purchase(MockedCreditCard, 1, onePm)
     val secondPurchase = Purchase(AnotherMockedCreditCard, 1, fourPm)
     CoffeeShop.buyMany(firstPurchase, secondPurchase) should be(Seq(Coffee(), Coffee()))
-    MockedCreditCard should (be(calledOnce) and be(calledWith(10)))
-    AnotherMockedCreditCard should (be(calledOnce) and be(calledWith(10)))
+    MockedCreditCard should (be(calledOnce) and be(calledWith(10, "USD")))
+    AnotherMockedCreditCard should (be(calledOnce) and be(calledWith(10, "USD")))
   }
 }

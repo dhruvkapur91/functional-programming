@@ -9,16 +9,16 @@ trait CustomMatchers {
       ""
     )
   }
-  class CalledWithMatcher(charge: Int) extends BeMatcher[MockCard] {
+  class CalledWithMatcher(charge: Int, currency : String) extends BeMatcher[MockCard] {
     def apply(left: MockCard): MatchResult = MatchResult(
-      left.calledWith == charge,
-      s"Expected to be called with ${charge}, but called with ${left.calledWith}",
+      left.calledWith == charge && left.currency == currency,
+      s"Expected to be called with $charge $currency, but called with ${left.calledWith} ${left.currency} ",
       ""
     )
   }
 
   def calledOnce = new CalledOnceMatcher
-  def calledWith(charge: Int) = new CalledWithMatcher(charge)
+  def calledWith(charge: Int, currency : String) = new CalledWithMatcher(charge, currency)
 }
 
 object CustomMatchers extends CustomMatchers

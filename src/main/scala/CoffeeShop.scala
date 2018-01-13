@@ -4,12 +4,12 @@ import SideEffect.CreditCard
 
 object SideEffect {
   class CreditCard(number : String) {
-    def charge(price : Int): Unit = {
+    def charge(price : Int, currency : String): Unit = {
       println(
         s"""
            |1. Contacted Credit Card company via web service
            |2. Authorizing transaction
-           |3. Charging credit card $price
+           |3. Charging credit card $price $currency
            |4. Charging credit card fee $$1
            |5. Recording transaction in DB
         """.stripMargin)
@@ -37,14 +37,14 @@ object CoffeeShop {
     if(purchase.numberOfCups == 0) Seq.empty else {
       val coffees = (1 to purchase.numberOfCups).map(_ => Coffee())
       val price = coffees.map(_.price).sum
-      purchase.creditCard.charge(price)
+      purchase.creditCard.charge(price, "USD")
       coffees
     }
   }
 
   def buy(creditCard: CreditCard): Coffee = {
     val coffee = Coffee()
-    creditCard.charge(coffee.price)
+    creditCard.charge(coffee.price, "USD")
     coffee
   }
 }
