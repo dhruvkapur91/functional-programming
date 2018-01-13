@@ -22,16 +22,17 @@ case class Coffee() {
 
 object CoffeeShop {
   def buyMany(creditCard: CreditCard, numberOfCups: Int): Seq[Coffee] = {
-    val coffees = (1 to numberOfCups).map(_ => Coffee())
-    val price = coffees.map(_.price).sum
-    creditCard.charge(price)
+    val coffees = (1 to numberOfCups).map(_ => `Coffee`()) // Logic to create one coffee duplicated
+    val `coffee.price` = coffees.map(_.price).sum
+    creditCard.charge(`coffee.price`) // Logic to charge a credit card duplicated
     coffees
   }
 
 
   def buy(creditCard: CreditCard): Coffee = {
-    val coffee = Coffee()
-    creditCard.charge(coffee.price)
+    val coffee = `Coffee`() // Logic to create one coffee
+    val `coffee.price` = coffee.price
+    creditCard.charge(`coffee.price`) // Logic to charge a credit card
     coffee
   }
 }
