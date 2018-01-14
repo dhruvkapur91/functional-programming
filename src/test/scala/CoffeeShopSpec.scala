@@ -26,4 +26,8 @@ class CoffeeShopSpec extends FunSuite with Matchers {
     CoffeeShop.buyMany(purchaseRequests: _*) should be(Order(Seq(Coffee(), Coffee()), 20))
   }
 
+  test("buying coffee without any purchase request should return 0 cups of coffee with price of 0$") {
+    CoffeeShop.buyMany() should be(Order(Seq.empty, 0))
+  }
+
 }
