@@ -12,32 +12,28 @@ case class Coffee() {
   val price = 10
 }
 
-case class Charge(price: Int) {
-  def +(other : Charge) = Charge(price + other.price)
-}
-
-case class Order(coffees: Seq[Coffee], charge: Charge) {
-  def +(other : Order) = Order(coffees ++ other.coffees, charge + other.charge)
+case class Order(coffees: Seq[Coffee], price: Int) {
+  def +(other : Order) = Order(coffees ++ other.coffees, price + other.price)
 }
 
 object CoffeeShop {
-  def buyMany(creditCard: CreditCard, numberOfCups: Int) : Order = {
-    val orders = (1 to numberOfCups).map(_ => buy(creditCard))
+  def buyMany(numberOfCups: Int) : Order = {
+    val orders = (1 to numberOfCups).map(_ => buy())
     orders.reduce((one,two) => one + two)
   }
 
 
-  def buy(creditCard: CreditCard): Order = {
+  def buy(): Order = {
     val coffee = Coffee()
-    Order(Seq(coffee), Charge(coffee.price))
+    Order(Seq(coffee), coffee.price)
   }
 
 }
 
 object CoffeeShopCounter {
   def buy(creditCard: CreditCard) = {
-    val order: Order = CoffeeShop.buy(creditCard)
-    creditCard.charge(order.charge.price)
+    val order: Order = CoffeeShop.buy()
+    creditCard.charge(order.price)
     println(order)
   }
 }
