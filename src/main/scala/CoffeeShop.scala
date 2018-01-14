@@ -12,23 +12,21 @@ case class Coffee() {
   val price = 10
 }
 
-case class Charge(price: Int)
-
-case class Order(coffee: Coffee, charge: Charge)
+case class Order(coffee: Coffee, price: Int)
 
 object CoffeeShop {
 
-  def buy(creditCard: CreditCard): Order = {
+  def buy(): Order = {
     val coffee = Coffee()
-    Order(coffee, Charge(coffee.price))
+    Order(coffee, coffee.price)
   }
 
 }
 
 object CoffeeShopCounter {
   def buy(creditCard: CreditCard) = {
-    val order: Order = CoffeeShop.buy(creditCard)
-    creditCard.charge(order.charge.price)
+    val order: Order = CoffeeShop.buy()
+    creditCard.charge(order.price)
     println(order)
   }
 }
