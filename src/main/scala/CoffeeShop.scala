@@ -1,3 +1,5 @@
+import Order.noOrder
+
 object SideEffect {
 
   class CreditCard(number: String) {
@@ -10,6 +12,10 @@ case class Order(items: Seq[Coffee], price: Int) {
   def +(other : Order) = Order(items ++ other.items, price + other.price)
 }
 
+object Order {
+  val noOrder = Order(Seq.empty,0)
+}
+
 case class Coffee() {
   val price = 10
 }
@@ -19,7 +25,7 @@ object CoffeeShop {
   def buyMany(numberOfCups: Int): Order = {
     (1 to numberOfCups)
       .map(_ => buy())
-      .reduce((one, two) => one + two)
+      .foldLeft(noOrder)((one, two) => one + two)
   }
 
 
