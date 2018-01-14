@@ -11,6 +11,7 @@ class CoffeeShopCounterSpec extends FunSuite with Matchers with ResetMocks {
   test("should call credit card with 20$ when buying two cups of coffee") {
     CoffeeShopCounter.buy(PurchaseRequest(MockedCreditCard, numberOfCups = 2, now()))
     MockedCreditCard.calledWith should be(20)
+    MockedCreditCard.currencyCalledWith should be("USD")
   }
 
   test("should not call credit card when not buying any coffee") {
@@ -25,7 +26,8 @@ class CoffeeShopCounterSpec extends FunSuite with Matchers with ResetMocks {
     """.stripMargin) {
     CoffeeShopCounter.buy(PurchaseRequest(MockedCreditCard, 1, onePm), PurchaseRequest(AnotherMockedCreditCard, 2, fourPm))
     MockedCreditCard.calledWith should be(10)
+    MockedCreditCard.currencyCalledWith should be("USD")
     AnotherMockedCreditCard.calledWith should be(20)
+    AnotherMockedCreditCard.currencyCalledWith should be("USD")
   }
-
 }

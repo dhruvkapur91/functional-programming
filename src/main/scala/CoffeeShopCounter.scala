@@ -7,7 +7,7 @@ object CoffeeShopCounter {
     val purchaseResponses = CoffeeShop.buyMany(purchaseRequests: _*)
     purchaseResponses.foreach(purchaseResponse =>
       if (purchaseResponse.order.items.nonEmpty)
-        purchaseResponse.creditCard.charge(purchaseResponse.order.price))
+        purchaseResponse.creditCard.charge(purchaseResponse.order.price, "USD"))
     println(purchaseResponses)
   }
 }

@@ -1,35 +1,23 @@
 import SideEffect.CreditCard
 
-class MockedCreditCard extends CreditCard("Mocked") {
+abstract class MockedCard(number: String) extends CreditCard(number) {
   var calledWith : Int = 0
   var wasCalled : Boolean = false
-  override def charge(price: Int): Unit = {
+  var currencyCalledWith: String = ""
+  override def charge(price: Int, currency: String): Unit = {
     wasCalled = true
     calledWith = calledWith + price
+    currencyCalledWith = currency
   }
 
-}
-
-object MockedCreditCard extends MockedCreditCard {
   def reset(): Unit = {
-    MockedCreditCard.calledWith = 0
-    MockedCreditCard.wasCalled = false
-  }
-}
-
-class AnotherMockedCreditCard extends CreditCard("Mocked") {
-  var calledWith : Int = 0
-  var wasCalled : Boolean = false
-  override def charge(price: Int): Unit = {
-    wasCalled = true
-    calledWith = calledWith + price
+    calledWith = 0
+    wasCalled = false
+    currencyCalledWith = ""
   }
 
 }
 
-object AnotherMockedCreditCard extends AnotherMockedCreditCard {
-  def reset(): Unit = {
-    MockedCreditCard.calledWith = 0
-    MockedCreditCard.wasCalled = false
-  }
-}
+object MockedCreditCard extends MockedCard("Mocked")
+
+object AnotherMockedCreditCard extends MockedCard("Another Mocked")

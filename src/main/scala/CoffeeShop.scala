@@ -6,7 +6,7 @@ import SideEffect.CreditCard
 object SideEffect {
 
   class CreditCard(number: String) {
-    def charge(price: Int): Unit = ???
+    def charge(price: Int, currency: String): Unit = ???
   }
 
 }
