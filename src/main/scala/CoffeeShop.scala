@@ -8,9 +8,7 @@ object SideEffect {
 
 }
 
-case class Charge(price: Int, creditCard: CreditCard)
-
-case class Order(items: Coffee, charge: Charge)
+case class Order(items: Coffee, price: Int)
 
 case class Coffee() {
   val price = 10
@@ -18,9 +16,9 @@ case class Coffee() {
 
 object CoffeeShop {
 
-  def buy(creditCard: CreditCard): Order = {
+  def buy(): Order = {
     val coffee = Coffee()
     //    creditCard.charge(coffee.price)
-    Order(coffee, Charge(coffee.price, creditCard))
+    Order(coffee, coffee.price)
   }
 }

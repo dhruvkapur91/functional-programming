@@ -7,8 +7,7 @@ class CoffeeShopSpec extends FunSuite with Matchers {
 //    MockedCreditCard should be(calledWith(10))
 //  }
 
-  test("buying a cup of coffee should return an order having a cup of coffee with charge of $10") {
-    val coffee = Coffee()
-    CoffeeShop.buy(MockedCreditCard) should be(Order(coffee, Charge(10, MockedCreditCard)))
+  test("buying a cup of coffee should return an order having a cup of coffee with price of $10") {
+    CoffeeShop.buy() should be(Order(Coffee(), 10))
   }
 }
