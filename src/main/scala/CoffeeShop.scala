@@ -1,6 +1,7 @@
 import java.time.LocalDateTime
 
 import Order.noOrder
+import SideEffect.CreditCard
 
 object SideEffect {
 
@@ -15,22 +16,29 @@ case class Order(items: Seq[Coffee], price: Int) {
 }
 
 object Order {
-  val noOrder = Order(Seq.empty,0)
+  val noOrder = Order(Seq.empty, 0)
 }
 
 case class Coffee() {
   val price = 10
 }
 
-case class PurchaseRequest(numberOfCups : Int, time : LocalDateTime)
-
+case class PurchaseRequest(creditCard: CreditCard, numberOfCups : Int, time : LocalDateTime)
+case class PurchaseResponse(creditCard: CreditCard, order: Order)
 
 object CoffeeShop {
-  def buyMany(purchaseRequest: PurchaseRequest*): Order = {
-    val totalCoffeesRequired = purchaseRequest.map(_.numberOfCups).sum
-    (1 to totalCoffeesRequired).map(_ => buy()).foldLeft(noOrder)(_ + _)
-  }
+  def buyMany(purchaseRequests: PurchaseRequest*): Seq[PurchaseResponse] = {
 
+    def _processRequestsFor(creditCard: CreditCard, purchaseRequests: Seq[PurchaseRequest]) = {
+      val totalCoffeesRequired = purchaseRequests.map(_.numberOfCups).sum
+      val combinedOrders = (1 to totalCoffeesRequired).map(_ => buy()).foldLeft(noOrder)(_ + _)
+      PurchaseResponse(creditCard, combinedOrders)
+    }
+
+    purchaseRequests.groupBy(_.creditCard).map{
+      case (creditCard, purchases) => _processRequestsFor(creditCard, purchases)
+    }.toSeq
+  }
 
   def buy(): Order = {
     val coffee = Coffee()

@@ -5,5 +5,6 @@ trait ResetMocks extends BeforeAndAfterEach {
 
   override protected def beforeEach(): Unit = {
     MockedCreditCard.reset()
+    AnotherMockedCreditCard.reset()
   }
 }
