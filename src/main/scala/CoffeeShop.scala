@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 import Order.noOrder
 
 object SideEffect {
@@ -20,12 +22,13 @@ case class Coffee() {
   val price = 10
 }
 
+case class PurchaseRequest(numberOfCups : Int, time : LocalDateTime)
+
 
 object CoffeeShop {
-  def buyMany(numberOfCups: Int): Order = {
-    (1 to numberOfCups)
-      .map(_ => buy())
-      .foldLeft(noOrder)((one, two) => one + two)
+  def buyMany(purchaseRequest: PurchaseRequest*): Order = {
+    val totalCoffeesRequired = purchaseRequest.map(_.numberOfCups).sum
+    (1 to totalCoffeesRequired).map(_ => buy()).foldLeft(noOrder)(_ + _)
   }
 
 
