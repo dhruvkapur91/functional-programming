@@ -7,13 +7,12 @@ class CoffeeShopSpec extends FunSuite with Matchers {
     CoffeeShop.buy() should be(Order(Seq(Coffee()), 10))
   }
 
-//  test("should call credit card with total of $20 when buying 2 cups of coffee") {
-//    CoffeeShop.buyMany(MockedCreditCard, 2) should be(Seq(Coffee(), Coffee()))
-//    MockedCreditCard should (be(calledOnce) and be(calledWith(20)))
-//  }
-
   test("buying 2 cup of coffees should return an order having 2 cups of coffee with price of $20") {
-    CoffeeShop.buyMany(2) should be(Order(Seq(Coffee(),Coffee()), 20))
+    CoffeeShop.buyMany(2) should be(Order(Seq(Coffee(), Coffee()), 20))
+  }
+
+  test("buying no coffee should return an order having 0 cups of coffee with price of $0") {
+    CoffeeShop.buyMany(0) should be(Order(Seq.empty, 0))
   }
 
 }
